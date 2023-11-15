@@ -1,63 +1,8 @@
 #include "myshell.h"
 
 /**
- * _getsline - reads a line from the keyboard
- * @line: pointer to the buffer to store the line
- * @n: size of the buffer
- * @stream: stream to read from
- * Return: the number of characters read
- */
-ssize_t _getsline(char **line, size_t *n, FILE *stream)
-{
-int c;
-char *new_line;
-size_t a = 0, new_size;
-if (line == NULL || n == NULL || stream == NULL)
-{
-return (-1);
-}
-
-if (*line == NULL)
-{
-*line = (char *)malloc(128);
-if (*line == NULL)
-{
-return (-1);
-}
-*n = 128;
-}
-while ((c = _fgetc(stream)) != EOF)
-{
-if (a >= *n - 1)
-{
-new_size = *n * 2;
-new_line = (char *)realloc(*line, new_size);
-if (new_line == NULL)
-{
-return (-1);
-}
-*line = new_line;
-*n = new_size;
-}
-(*line)[a] = (char)c;
-a++;
-if (c == '\n')
-{
-break;
-}
-}
-(*line)[a] = '\0';
-if (a == 0)
-{
-return (-1);
-}
-return (a);
-}
-
-
-/**
  * _putchar - writes the character a to stdout
- * @c: The character to print
+ * @a: The character to print
  * Return: On success 1. or -1 on error
  */
 int _putchar(char a)

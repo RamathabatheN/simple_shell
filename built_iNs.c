@@ -2,7 +2,7 @@
 
 /**
  * get_cmd - used for execution
- * command: input string
+ * @command: input string
  * Return: executed command
  */
 char *get_cmd(char **command)
@@ -92,15 +92,5 @@ if (old_dir != NULL)
 {
 setenv("OLDPWD", old_dir, 1);
 }
-return (0);
-}
-
-/**
- * a_alias - creates and deletes aliases
- * @command: input string
- * Return: Always 0
- */
-int a_alias(char __attribute__((unused)) **command)
-{
 return (0);
 }

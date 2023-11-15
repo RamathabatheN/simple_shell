@@ -1,10 +1,33 @@
 #include "myshell.h"
 
 /**
+ * interactive_shells - Entry point for interactive shell
+ * Return: Always 0 (success)
+ */
+int interactive_shells(void)
+{
+char *input = NULL;
+size_t len = 0;
+ssize_t __attribute__((unused)) a;
+while (1)
+{
+a = write(1, "$ ", 2);
+if (_getsline(&input, &len, stdin) == -1)
+{
+perror("getline");
+exit(-1);
+}
+parse_execute(input, environ);
+free(input);
+}
+return (0);
+}
+
+/**
  * parse_execute - Parses the command to be executed
  * @input: Input string
  * @envp: Environment variables
- */ 
+ */
 void parse_execute(char *input, char **envp)
 {
 inside_s built_on[] = {
@@ -16,8 +39,8 @@ inside_s built_on[] = {
 {NULL, NULL}
 };
 
-char *commands[100], *token, *args[100], *inside;
-int command_counter = 0, __attribute__((unused)) status = 1, i, argc, a;
+char *commands[100], *token;
+int command_counter = 0, i;
 
 token = _strtok(input, ";");
 while (token != NULL)
@@ -27,8 +50,22 @@ token = _strtok(NULL, ";");
 }
 for (i = 0; i < command_counter; i++)
 {
-argc = 0;
-token = _strtok(commands[i], " \t\n");
+execute_command(commands[i], built_on, envp);
+}
+}
+
+/**
+ * execute_command - Executes a single command
+ * @command: Command string
+ * @built_on: Array of built-in commands
+ * @envp: Environment variables
+ */
+void execute_command(char *command, inside_s *built_on, char **envp)
+{
+char *args[100], *token, *inside;
+int argc = 0, a;
+
+token = _strtok(command, " \t\n");
 while (token != NULL)
 {
 if (token[0] == '#')
@@ -59,27 +96,15 @@ executing_command(args, envp);
 }
 }
 }
-}
 
 /**
- * executing_command - Executes a command
- * @args: Arguments
+ * child_execution - Executes the child process
+ * @expanded_args: Expanded arguments
  * @envp: Environment
  */
-void executing_command(char **args, char **envp)
+void child_execution(char **expanded_args, char **envp)
 {
-int a, status = 0, chilD_status;
-char *expanded_args[100], *path, *token, path_buffer[256];
-pid_t pid, __attribute__((unused)) wtpid;
-
-for (a = 0; args[a] != NULL; a++)
-{
-expanded_args[a] = expand_env_vars(args[a], envp, status);
-}
-expanded_args[a] = NULL;
-pid = fork();
-if (pid == 0)
-{
+char *path, *token, path_buffer[256];
 path = m_getenv("PATH");
 token = _strtok(path, ":");
 
@@ -100,11 +125,34 @@ token = _strtok(NULL, ":");
 }
 else
 {
-return;
+exit(0);
 }
 }
 perror("execve");
 exit(1);
+}
+
+
+/**
+ * executing_command - Executes a command
+ * @args: Arguments
+ * @envp: Environment
+ */
+void executing_command(char **args, char **envp)
+{
+int status = 0, chilD_status, a;
+char *expanded_args[100];
+pid_t pid, __attribute__((unused)) wtpid;
+
+for (a = 0; args[a] != NULL; a++)
+{
+expanded_args[a] = expand_env_vars(args[a], envp, status);
+}
+expanded_args[a] = NULL;
+pid = fork();
+if (pid == 0)
+{
+child_execution(expanded_args, envp);
 }
 else if (pid < 0)
 {

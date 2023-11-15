@@ -1,29 +1,21 @@
 #include "myshell.h"
 
 /**
- * main - our shell
- * @argc: number of arguments
- * @argv: arguments
- * @envp: environment variables
+ * main - Main entry point
+ * @argc: Number of command-line arguments
+ * @argv: Array of command-line arguments
  * Return: Always 0
  */
-int main(int __attribute__((unused)) argc, char __attribute__((unused)) *argv[]
-, char __attribute__((unused)) *envp[])
+int main(int argc, char *argv[])
 {
-while (1)
+if (argc > 1 && strcmp(argv[1], "-i") == 0)
 {
-char *input = NULL;
-size_t len = 0;
-ssize_t __attribute__((unused)) a;
-
-a = write(1, "$ ", 2);
-if (_getsline(&input, &len, stdin) == -1)
-{
-perror("getline");
-exit(-1);
+interactive_shells();
 }
-parse_execute(input, environ);
-free(input);
+else
+{
+shells();
 }
+interactive_shells();
 return (0);
 }

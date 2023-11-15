@@ -66,10 +66,9 @@ return (0);
  * @status: exit status
  * Return: output
  */
-char *expand_env_vars(char *input, char __attribute__((unused)) **envp, int status)
+char *expand_env_vars(char *input, char **envp, int status)
 {
-char *src, *dst, var_name[128], *var_value;
-int var_idx;
+char *src, *dst;
 char *output = malloc(_strlen(input) + 1);
 if (output == NULL)
 {
@@ -82,35 +81,7 @@ while (*src)
 {
 if (src[0] == '$' && src[1] != '\0')
 {
-src++;
-if (src[0] == '?')
-{
-my_sprintf(dst, "%d", WEXITSTATUS(status));
-dst += _strlen(dst);
-src++;
-}
-else if (src[0] == '$')
-{
-my_sprintf(dst, "%d", getpid());
-dst += _strlen(dst);
-src++;
-}
-else
-{
-var_idx = 0;
-while (*src && *src != ' ' && *src != '\t' && *src != '\n')
-{
-var_name[var_idx++] = *src;
-src++;
-}
-var_name[var_idx] = '\0';
-var_value = m_getenv(var_name);
-if (var_value != NULL)
-{
-_strcpy(dst, var_value);
-dst += _strlen(var_value);
-}
-}
+src = h_dollar_sign(src + 1, dst, envp, status);
 }
 else
 {

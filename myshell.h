@@ -12,7 +12,11 @@
 #include <limits.h>
 #include <stdarg.h>
 
-
+/**
+ * struct inside - Struct inside
+ * @inside: built-in command
+ * @func: The function associated
+ */
 typedef struct inside
 {
 char *inside;
@@ -33,7 +37,7 @@ int a_alias(char **command);
 int shell_s(void);
 ssize_t _getsline(char **line, size_t *n, FILE *stream);
 void gone(char *s);
-char *_strtok(char* str, const char* delim);
+char *_strtok(char *str, const char *delim);
 char *_strcat(char *dest, char *src);
 char *_strcpy(char *dest, char *src);
 char *_strchr(const char *s, char c);
@@ -47,5 +51,16 @@ void my_sprintf(char *buffer, const char *format, ...);
 char *m_getenv(const char *name);
 char *expand_env_vars(char *input, char **envp, int status);
 int _fgetc(FILE *stream);
+
+int interactive_shells(void);
+int fork_wait_execute(void);
+int symbols(char *input);
+void execute_command(char *command, inside_s *built_on, char **envp);
+void child_execution(char **expanded_args, char **envp);
+char *h_dollar_sign(char *src, char *dst, char **envp, int status);
+char *h_var_name(char *src, char *dst, char **envp);
+int _allocate_line(char **line, size_t n);
+void *my_realloc(void *ptr, size_t size);
+size_t usable_size(const void *ptr);
 
 #endif
