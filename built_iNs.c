@@ -13,7 +13,6 @@ inside_s built_on[] = {
 {"setenv", set_env},
 {"unsetenv", unset_env},
 {"cd", cD},
-{"alias", a_alias},
 {NULL, NULL}
 };
 
