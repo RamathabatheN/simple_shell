@@ -40,7 +40,7 @@ char *_strchr(const char *s, char c);
 size_t _strlen(char *s);
 int _strcmp(char *s1, char *s2);
 char *_strdup(char *str);
-int _putchar(char c);
+int _putchar(char a);
 void my_puts(const char *str);
 void my_putint(int num);
 void my_sprintf(char *buffer, const char *format, ...);

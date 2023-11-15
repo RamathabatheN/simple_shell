@@ -55,7 +55,7 @@ return (dest);
  */
 char *_strtok(char *s, const char *delim)
 {
-static char *follow = NULL;
+static char *follow;
 char *token;
 
 if (s != NULL)
@@ -100,7 +100,7 @@ while (*s != '\0')
 {
 if (*s == c)
 {
-return (char *)s;
+return ((char *)s);
 }
 s++;
 }

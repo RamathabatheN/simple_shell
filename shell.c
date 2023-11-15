@@ -6,12 +6,12 @@
  */
 int shells(void)
 {
-char *args[100], *input = NULL, path[100];
+char *args[100], *input = NULL, __attribute__((unused)) path[100];
 size_t l = 0;
-ssize_t a, r;
+ssize_t __attribute__((unused)) a, r;
 pid_t pid;
 int ex;
-while (1) 
+while (1)
 {
 a = write(1, "$ ", 2);
 r = getline(&input, &l, stdin);

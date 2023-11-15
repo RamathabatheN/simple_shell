@@ -5,10 +5,10 @@
  * @command: input string
  * Return: a
  */
-int envr(char **command)
+int envr(char __attribute__((unused)) **command)
 {
 unsigned int a;
-ssize_t e, f;
+ssize_t __attribute__((unused)) e, __attribute__((unused)) f;
 for (a = 0; environ[a] != NULL; a++)
 {
 e = write(1, environ[a], _strlen(environ[a]));
@@ -24,7 +24,7 @@ return (a);
  */
 int set_env(char **command)
 {
-ssize_t q;
+ssize_t __attribute__((unused)) q;
 if (command[1] == NULL || command[2] == NULL)
 {
 q = write(STDERR_FILENO, "Usage: setenv VARNAME VALUE\n", 28);
@@ -45,7 +45,7 @@ return (0);
  */
 int unset_env(char **command)
 {
-ssize_t q;
+ssize_t __attribute__((unused)) q;
 if (command[1] == NULL)
 {
 q = write(STDERR_FILENO, "Usage: unsetenv VARNAME\n", 24);
@@ -66,7 +66,7 @@ return (0);
  * @status: exit status
  * Return: output
  */
-char *expand_env_vars(char *input, char **envp, int status)
+char *expand_env_vars(char *input, char __attribute__((unused)) **envp, int status)
 {
 char *src, *dst, var_name[128], *var_value;
 int var_idx;
