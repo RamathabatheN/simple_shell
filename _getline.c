@@ -22,22 +22,24 @@ return ((*line == NULL) ? -1 : 0);
 ssize_t _getsline(char **line, size_t *n, FILE *stream)
 {
 int c;
-size_t a = 0, new_size;
-char *new_line;
+size_t a = 0, new_sz;
+char *new_ln;
+
 if (line == NULL || n == NULL || stream == NULL)
 return (-1);
+
 if (*line == NULL && _allocate_line(line, 128) == -1)
 return (-1);
 while ((c = _fgetc(stream)) != EOF)
 {
 if (a >= *n - 1)
 {
-new_size = *n * 2;
-new_line = (char *)my_realloc(*line, new_size);
-if (new_line == NULL)
+new_sz = *n * 2;
+new_ln = (char *)my_realloc(*line, new_sz);
+if (new_ln == NULL)
 return (-1);
-*line = new_line;
-*n = new_size;
+*line = new_ln;
+*n = new_sz;
 }
 (*line)[a] = (char)c;
 a++;

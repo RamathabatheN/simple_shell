@@ -91,5 +91,6 @@ dst++;
 }
 }
 *dst = '\0';
+free(output);
 return (output);
 }

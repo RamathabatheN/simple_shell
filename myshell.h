@@ -11,6 +11,7 @@
 #include <fcntl.h>
 #include <limits.h>
 #include <stdarg.h>
+#include <errno.h>
 
 /**
  * struct inside - Struct inside
@@ -53,7 +54,7 @@ char *expand_env_vars(char *input, char **envp, int status);
 int _fgetc(FILE *stream);
 
 int interactive_shells(void);
-int fork_wait_execute(void);
+int fork_wait_execute(char **args);
 int symbols(char *input);
 void execute_command(char *command, inside_s *built_on, char **envp);
 void child_execution(char **expanded_args, char **envp);

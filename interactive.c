@@ -1,16 +1,17 @@
 #include "myshell.h"
 
 /**
- * interactive_shells - Entry point for interactive shell
- * Return: Always 0 (success)
+ * interactive_shells - Entry point for interactive shell.
+ * Return: Always 0
  */
 int interactive_shells(void)
+{
+while (1)
 {
 char *input = NULL;
 size_t len = 0;
 ssize_t __attribute__((unused)) a;
-while (1)
-{
+
 a = write(1, "$ ", 2);
 if (_getsline(&input, &len, stdin) == -1)
 {
@@ -24,33 +25,72 @@ return (0);
 }
 
 /**
- * parse_execute - Parses the command to be executed
- * @input: Input string
- * @envp: Environment variables
+ * child_execution - Executes the child process
+ * @expanded_args: Expanded arguments
+ * @envp: Environment
+ * Return: void
  */
-void parse_execute(char *input, char **envp)
+void child_execution(char **expanded_args, char **envp)
 {
-inside_s built_on[] = {
-{"env", envr},
-{"exit", exiting},
-{"setenv", set_env},
-{"unsetenv", unset_env},
-{"cd", cD},
-{NULL, NULL}
-};
+char *path, *token, path_buffer[256];
+path = m_getenv("PATH");
+token = _strtok(path, ":");
 
-char *commands[100], *token;
-int command_counter = 0, i;
-
-token = _strtok(input, ";");
 while (token != NULL)
 {
-commands[command_counter++] = token;
-token = _strtok(NULL, ";");
-}
-for (i = 0; i < command_counter; i++)
+if (expanded_args[0][0] == '/' || expanded_args[0][0] == '.')
 {
-execute_command(commands[i], built_on, envp);
+_strcpy(path_buffer, expanded_args[0]);
+}
+else
+{
+_strcpy(path_buffer, "/bin/");
+_strcat(path_buffer, expanded_args[0]);
+}
+if (execve(path_buffer, expanded_args, envp) == -1)
+{
+token = _strtok(NULL, ":");
+}
+else
+{
+exit(0);
+}
+}
+perror("execve");
+_exit(1);
+}
+
+/**
+ * executing_command - Executes a command
+ * @args: Arguments
+ * @envp: Environment
+ */
+void executing_command(char **args, char **envp)
+{
+int status = 0, chilD_status, a;
+char *expanded_args[100];
+pid_t pid, __attribute__((unused)) wtpid;
+
+for (a = 0; args[a] != NULL; a++)
+{
+expanded_args[a] = expand_env_vars(args[a], envp, status);
+}
+expanded_args[a] = NULL;
+pid = fork();
+if (pid == 0)
+{
+child_execution(expanded_args, envp);
+}
+else if (pid < 0)
+{
+perror("fork");
+}
+else
+{
+do {
+wtpid = waitpid(pid, &chilD_status, WUNTRACED);
+} while (!WIFEXITED(chilD_status) && !WIFSIGNALED(chilD_status));
+status = WEXITSTATUS(chilD_status);
 }
 }
 
@@ -98,71 +138,32 @@ executing_command(args, envp);
 }
 
 /**
- * child_execution - Executes the child process
- * @expanded_args: Expanded arguments
- * @envp: Environment
+ * parse_execute - Parses the command to be executed
+ * @input: Input string
+ * @envp: Environment variables
  */
-void child_execution(char **expanded_args, char **envp)
+void parse_execute(char *input, char **envp)
 {
-char *path, *token, path_buffer[256];
-path = m_getenv("PATH");
-token = _strtok(path, ":");
+inside_s built_on[] = {
+{"env", envr},
+{"exit", exiting},
+{"setenv", set_env},
+{"unsetenv", unset_env},
+{"cd", cD},
+{NULL, NULL}
+};
 
+char *commands[100], *token;
+int command_counter = 0, i;
+
+token = _strtok(input, ";");
 while (token != NULL)
 {
-if (expanded_args[0][0] == '/' || expanded_args[0][0] == '.')
-{
-_strcpy(path_buffer, expanded_args[0]);
+commands[command_counter++] = token;
+token = _strtok(NULL, ";");
 }
-else
+for (i = 0; i < command_counter; i++)
 {
-_strcpy(path_buffer, "/bin/");
-_strcat(path_buffer, expanded_args[0]);
-}
-if (execve(path_buffer, expanded_args, envp) == -1)
-{
-token = _strtok(NULL, ":");
-}
-else
-{
-exit(0);
-}
-}
-perror("execve");
-exit(1);
-}
-
-
-/**
- * executing_command - Executes a command
- * @args: Arguments
- * @envp: Environment
- */
-void executing_command(char **args, char **envp)
-{
-int status = 0, chilD_status, a;
-char *expanded_args[100];
-pid_t pid, __attribute__((unused)) wtpid;
-
-for (a = 0; args[a] != NULL; a++)
-{
-expanded_args[a] = expand_env_vars(args[a], envp, status);
-}
-expanded_args[a] = NULL;
-pid = fork();
-if (pid == 0)
-{
-child_execution(expanded_args, envp);
-}
-else if (pid < 0)
-{
-perror("fork");
-}
-else
-{
-do {
-wtpid = waitpid(pid, &chilD_status, WUNTRACED);
-} while (!WIFEXITED(chilD_status) && !WIFSIGNALED(chilD_status));
-status = WEXITSTATUS(chilD_status);
+execute_command(commands[i], built_on, envp);
 }
 }

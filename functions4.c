@@ -1,6 +1,17 @@
 #include "myshell.h"
 
 /**
+ * usable_size - returns the size of a memory block
+ * @ptr: pointer to the memory block
+ * Return: size of the memory block
+ */
+size_t usable_size(const void *ptr)
+{
+size_t *size = (size_t *)ptr - 1;
+return (*size);
+}
+
+/**
  * h_dollar_sign - Handles the cases when a dollar sign is encountered
  * @src: input string after encountering '$'
  * @dst: destination string
@@ -10,6 +21,9 @@
  */
 char *h_dollar_sign(char *src, char *dst, char **envp, int status)
 {
+char __attribute__((unused)) *orig_src = src;
+char __attribute__((unused)) *orig_dst = dst;
+
 if (src[0] == '?')
 {
 src++;
@@ -42,7 +56,6 @@ char *h_var_name(char *src, char *dst, char __attribute__((unused)) **envp)
 int var_idx = 0;
 char variable_name[128];
 char *var_value;
-
 while (*src && *src != ' ' && *src != '\t' && *src != '\n')
 {
 variable_name[var_idx++] = *src;
@@ -90,15 +103,3 @@ for (i = 0; i < copying_size; ++i)
 free(ptr);
 return (new_p);
 }
-
-/**
- * usable_size - returns the size of a memory block
- * @ptr: pointer to the memory block
- * Return: size of the memory block
- */
-size_t usable_size(const void *ptr)
-{
-size_t *size = (size_t *)ptr - 1;
-return (*size);
-}
-
