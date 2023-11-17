@@ -6,21 +6,20 @@
  */
 int shells(void)
 {
-char __attribute__((unused)) *args[100];
-char *input = NULL, __attribute__((unused)) path[100];
+char __attribute__((unused)) *args[100], *input = NULL, __attribute__((unused)) path[100];
 size_t l = 0;
 ssize_t __attribute__((unused)) a, r;
 pid_t __attribute__((unused)) pid;
 int __attribute__((unused)) ex;
 while (1)
 {
-a = write(1, "$ ", 2);
+a = write(STDOUT_FILENO, "$ ", 2);
 r = _getsline(&input, &l, stdin);
 if (r == -1)
 {
 perror("getline:");
 free(input);
-exit(-1);
+exit(EXIT_FAILURE);
 }
 _strtok(input, "\n");
 args[0] = input;
@@ -28,12 +27,11 @@ args[1] = NULL;
 fork_wait_execute(args);
 }
 free(input);
-return (0);
+return (EXIT_SUCCESS);
 }
 
 /**
  * fork_wait_execute - Forks a child process and waits for it to finish
- * @args: arguments
  * Return: Always 0 (success)
  */
 int fork_wait_execute(char **args)
@@ -47,7 +45,7 @@ ex = execve(args[0], args, NULL);
 if (ex == -1)
 {
 perror("execve:");
-exit(-1);
+exit(EXIT_FAILURE);
 }
 }
 else if (pid > 0)
@@ -57,7 +55,7 @@ wait(NULL);
 else
 {
 perror("Error:");
-exit(-3);
+exit(EXIT_FAILURE);
 }
-return (0);
+return (EXIT_SUCCESS);
 }

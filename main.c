@@ -17,5 +17,5 @@ else
 {
 interactive_shells();
 }
-return (0);
+return (EXIT_SUCCESS);
 }

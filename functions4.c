@@ -65,7 +65,7 @@ variable_name[var_idx] = '\0';
 var_value = m_getenv(variable_name);
 if (var_value != NULL)
 {
-_strcpy(dst, var_value);
+_strcpy(dst, var_value, sizeof(dst));
 }
 return (src);
 }

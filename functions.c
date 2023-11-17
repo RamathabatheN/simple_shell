@@ -1,49 +1,50 @@
 #include "myshell.h"
 
 /**
- * _strcat - concatenates two strings
- * @dest: input string
- * @src: input string
- * Return:dest
- */
-char *_strcat(char *dest, char *src)
-{
-int j = 0, b = 0;
-while (dest[j] != '\0')
-{
-j++;
-}
-while (src[b] != '\0')
-{
-dest[j] = src[b];
-j++;
-b++;
-}
-dest[j] = '\0';
-return (dest);
-}
-
-/**
  * _strcpy - copies the string pointed to by src
  * @dest: copy to
  * @src: copy from
+ * @dest_size: size of dest
  * Return: copied string
  */
-char *_strcpy(char *dest, char *src)
+void _strcpy(char *dest, const char *src, size_t dest_size)
 {
-int a = 0;
-int j;
+ssize_t __attribute__((unused)) a;
+size_t i;
+if (dest == NULL || src == NULL || dest_size == 0)
+{
+a = write(STDERR_FILENO, "Invalid input in safe_strcpy\n", 30);
+return;
+}
+for (i = 0; i < dest_size - 1 && src[i] != '\0'; ++i)
+{
+dest[i] = src[i];
+}
+dest[i] = '\0';
+}
 
-while (*(src + a) != '\0')
+/**
+ * _strcat - concatenates two strings
+ * @dest: input string
+ * @src: input string
+ * @dest_size: size of dest
+ * Return:dest
+ */
+void _strcat(char *dest, const char *src, size_t dest_size)
 {
-a++;
-}
-for (j = 0 ; j < a ; j++)
+ssize_t __attribute__((unused)) a;
+size_t i, dest_len;
+if (dest == NULL || src == NULL || dest_size == 0)
 {
-dest[j] = src[j];
+a = write(STDERR_FILENO, "Invalid input in safe_strcat\n", 30);
+return;
 }
-dest[a] = '\0';
-return (dest);
+dest_len = strlen(dest);
+for (i = 0; i < dest_size - 1 - dest_len && src[i] != '\0'; ++i)
+{
+dest[dest_len + i] = src[i];
+}
+dest[dest_len + i] = '\0';
 }
 
 

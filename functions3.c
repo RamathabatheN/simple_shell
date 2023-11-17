@@ -110,15 +110,26 @@ va_end(args);
  */
 int _fgetc(FILE *stream)
 {
-char i;
-ssize_t readb = read(fileno(stream), &i, 1);
-
-if (readb == 1)
+size_t readb;
+ssize_t __attribute__((unused)) a;
+char ch;
+if (stream == NULL)
 {
-return ((int)i);
+a = write(STDERR_FILENO, "Invalid file stream in _fgetc\n", 32);
+return (EOF);
 }
-else
+readb = fread(&ch, 1, 1, stream);
+if (readb == 0)
+{
+if (feof(stream))
 {
 return (EOF);
 }
+else if (ferror(stream))
+{
+perror("Error reading from file");
+return (EOF);
+}
+}
+return ((int)ch);
 }

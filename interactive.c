@@ -12,16 +12,18 @@ char *input = NULL;
 size_t len = 0;
 ssize_t __attribute__((unused)) a;
 
-a = write(1, "$ ", 2);
+a = write(STDOUT_FILENO, "$ ", 2);
 if (_getsline(&input, &len, stdin) == -1)
 {
 perror("getline");
-exit(-1);
+free(input);
+exit(EXIT_FAILURE);
 }
+gone(input);
 parse_execute(input, environ);
 free(input);
 }
-return (0);
+return (EXIT_SUCCESS);
 }
 
 /**
@@ -40,12 +42,12 @@ while (token != NULL)
 {
 if (expanded_args[0][0] == '/' || expanded_args[0][0] == '.')
 {
-_strcpy(path_buffer, expanded_args[0]);
+_strcpy(path_buffer, expanded_args[0], sizeof(path_buffer));
 }
 else
 {
-_strcpy(path_buffer, "/bin/");
-_strcat(path_buffer, expanded_args[0]);
+_strcpy(path_buffer, "/bin/", sizeof(path_buffer));
+_strcat(path_buffer, expanded_args[0], sizeof(path_buffer));
 }
 if (execve(path_buffer, expanded_args, envp) == -1)
 {
@@ -53,12 +55,13 @@ token = _strtok(NULL, ":");
 }
 else
 {
-exit(0);
+exit(EXIT_SUCCESS);
 }
 }
 perror("execve");
-_exit(1);
+_exit(EXIT_FAILURE);
 }
+
 
 /**
  * executing_command - Executes a command
@@ -87,7 +90,8 @@ perror("fork");
 }
 else
 {
-do {
+do
+{
 wtpid = waitpid(pid, &chilD_status, WUNTRACED);
 } while (!WIFEXITED(chilD_status) && !WIFSIGNALED(chilD_status));
 status = WEXITSTATUS(chilD_status);

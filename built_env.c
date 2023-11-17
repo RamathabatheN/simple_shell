@@ -27,15 +27,15 @@ int set_env(char **command)
 ssize_t __attribute__((unused)) q;
 if (command[1] == NULL || command[2] == NULL)
 {
-q = write(STDERR_FILENO, "Usage: setenv VARNAME VALUE\n", 28);
-return (-1);
+q = write(STDERR_FILENO, "Usage: setenv VARNAME VALUE\n", 29);
+return (EXIT_FAILURE);
 }
 if (setenv(command[1], command[2], 1) != 0)
 {
 perror("setenv");
-return (-1);
+return (EXIT_FAILURE);
 }
-return (0);
+return (EXIT_SUCCESS);
 }
 
 /**
@@ -48,15 +48,15 @@ int unset_env(char **command)
 ssize_t __attribute__((unused)) q;
 if (command[1] == NULL)
 {
-q = write(STDERR_FILENO, "Usage: unsetenv VARNAME\n", 24);
-return (-1);
+q = write(STDERR_FILENO, "Usage: unsetenv VARNAME\n", 25);
+return (EXIT_FAILURE);
 }
 if (unsetenv(command[1]) != 0)
 {
 perror("unsetenv");
-return (-1);
+return (EXIT_FAILURE);
 }
-return (0);
+return (EXIT_SUCCESS);
 }
 
 /**
@@ -73,7 +73,7 @@ char *output = malloc(_strlen(input) + 1);
 if (output == NULL)
 {
 perror("malloc");
-exit(1);
+exit(EXIT_FAILURE);
 }
 src = input;
 dst = output;
@@ -91,6 +91,5 @@ dst++;
 }
 }
 *dst = '\0';
-free(output);
 return (output);
 }

@@ -26,10 +26,10 @@ size_t a = 0, new_sz;
 char *new_ln;
 
 if (line == NULL || n == NULL || stream == NULL)
-return (-1);
+return (EXIT_FAILURE);
 
 if (*line == NULL && _allocate_line(line, 128) == -1)
-return (-1);
+return (EXIT_FAILURE);
 while ((c = _fgetc(stream)) != EOF)
 {
 if (a >= *n - 1)
@@ -37,7 +37,7 @@ if (a >= *n - 1)
 new_sz = *n * 2;
 new_ln = (char *)my_realloc(*line, new_sz);
 if (new_ln == NULL)
-return (-1);
+return (EXIT_FAILURE);
 *line = new_ln;
 *n = new_sz;
 }
@@ -48,6 +48,6 @@ break;
 }
 (*line)[a] = '\0';
 if (a == 0)
-return (-1);
+return (EXIT_FAILURE);
 return (a);
 }

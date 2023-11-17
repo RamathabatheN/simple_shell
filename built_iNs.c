@@ -39,7 +39,7 @@ if (_strcmp(command[0], "exit") == 0)
 {
 _exit(2);
 }
-return (0);
+return (EXIT_SUCCESS);
 }
 
 /**
@@ -70,7 +70,7 @@ new_dir = prev_dir;
 }
 else
 {
-q = write(STDERR_FILENO, "cd: OLDPWD not set\n", 19);
+q = write(STDERR_FILENO, "cd: OLDPWD not set\n", 20);
 i = -1;
 }
 }
@@ -80,7 +80,7 @@ old_dir = getcwd(NULL, 0);
 if (chdir(command[1]) != 0)
 {
 perror("chdir");
-return (-1);
+return (EXIT_FAILURE);
 }
 new_dir = getcwd(NULL, 0);
 }
@@ -92,5 +92,5 @@ if (old_dir != NULL)
 {
 setenv("OLDPWD", old_dir, 1);
 }
-return (0);
+return (EXIT_SUCCESS);
 }

@@ -28,7 +28,7 @@ return (s1[a] - s2[a]);
 }
 a++;
 }
-return (0);
+return (EXIT_SUCCESS);
 }
 
 
