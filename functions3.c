@@ -115,7 +115,7 @@ ssize_t __attribute__((unused)) a;
 char ch;
 if (stream == NULL)
 {
-a = write(STDERR_FILENO, "Invalid file stream in _fgetc\n", 32);
+a = write(STDERR_FILENO, "Invalid file stream in _fgetc\n", 31);
 return (EOF);
 }
 readb = fread(&ch, 1, 1, stream);

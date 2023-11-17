@@ -13,7 +13,7 @@ ssize_t __attribute__((unused)) a;
 size_t i;
 if (dest == NULL || src == NULL || dest_size == 0)
 {
-a = write(STDERR_FILENO, "Invalid input in safe_strcpy\n", 30);
+a = write(STDERR_FILENO, "Invalid input in safe_strcpy\n", 29);
 return;
 }
 for (i = 0; i < dest_size - 1 && src[i] != '\0'; ++i)
@@ -36,7 +36,7 @@ ssize_t __attribute__((unused)) a;
 size_t i, dest_len;
 if (dest == NULL || src == NULL || dest_size == 0)
 {
-a = write(STDERR_FILENO, "Invalid input in safe_strcat\n", 30);
+a = write(STDERR_FILENO, "Invalid input in safe_strcat\n", 29);
 return;
 }
 dest_len = strlen(dest);

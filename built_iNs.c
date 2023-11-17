@@ -70,7 +70,7 @@ new_dir = prev_dir;
 }
 else
 {
-q = write(STDERR_FILENO, "cd: OLDPWD not set\n", 20);
+q = write(STDERR_FILENO, "cd: OLDPWD not set\n", 19);
 i = -1;
 }
 }
