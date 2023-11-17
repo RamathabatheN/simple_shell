@@ -6,7 +6,8 @@
  */
 int shells(void)
 {
-char __attribute__((unused)) *args[100], *input = NULL, __attribute__((unused)) path[100];
+char __attribute__((unused)) *args[100], *input = NULL;
+char __attribute__((unused)) path[100];
 size_t l = 0;
 ssize_t __attribute__((unused)) a, r;
 pid_t __attribute__((unused)) pid;
@@ -32,6 +33,7 @@ return (EXIT_SUCCESS);
 
 /**
  * fork_wait_execute - Forks a child process and waits for it to finish
+ * @args: Arguments
  * Return: Always 0 (success)
  */
 int fork_wait_execute(char **args)

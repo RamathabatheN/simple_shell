@@ -90,8 +90,7 @@ perror("fork");
 }
 else
 {
-do
-{
+do {
 wtpid = waitpid(pid, &chilD_status, WUNTRACED);
 } while (!WIFEXITED(chilD_status) && !WIFSIGNALED(chilD_status));
 status = WEXITSTATUS(chilD_status);
