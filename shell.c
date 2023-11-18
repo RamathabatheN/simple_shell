@@ -20,7 +20,7 @@ if (r == -1)
 {
 perror("getline:");
 free(input);
-exit(EXIT_FAILURE);
+exit(-1);
 }
 _strtok(input, "\n");
 args[0] = input;
@@ -33,7 +33,7 @@ return (EXIT_SUCCESS);
 
 /**
  * fork_wait_execute - Forks a child process and waits for it to finish
- * @args: Arguments
+ * @args:arguments
  * Return: Always 0 (success)
  */
 int fork_wait_execute(char **args)
@@ -47,7 +47,7 @@ ex = execve(args[0], args, NULL);
 if (ex == -1)
 {
 perror("execve:");
-exit(EXIT_FAILURE);
+exit(-1);
 }
 }
 else if (pid > 0)
@@ -57,7 +57,7 @@ wait(NULL);
 else
 {
 perror("Error:");
-exit(EXIT_FAILURE);
+exit(-1);
 }
 return (EXIT_SUCCESS);
 }

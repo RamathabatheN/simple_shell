@@ -6,6 +6,8 @@
  */
 int interactive_shells(void)
 {
+is_interactive_mode = 1;
+signal(SIGINT, signal_handler);
 while (1)
 {
 char *input = NULL;
@@ -17,13 +19,51 @@ if (_getsline(&input, &len, stdin) == -1)
 {
 perror("getline");
 free(input);
-exit(EXIT_FAILURE);
+exit(-1);
 }
-gone(input);
+if (_strcmp(input, "exit") == 0)
+{
+free(input);
+break;
+}
 parse_execute(input, environ);
+if (input != NULL)
+{
 free(input);
 }
+}
 return (EXIT_SUCCESS);
+}
+
+/**
+ * parse_execute - Parses the command to be executed
+ * @input: Input string
+ * @envp: Environment variables
+ */
+void parse_execute(char *input, char **envp)
+{
+inside_s built_on[] = {
+{"env", envr},
+{"exit", exiting},
+{"setenv", set_env},
+{"unsetenv", unset_env},
+{"cd", cD},
+{NULL, NULL}
+};
+
+char *commands[100], *token;
+int command_counter = 0, i;
+
+token = _strtok(input, ";");
+while (token != NULL)
+{
+commands[command_counter++] = token;
+token = _strtok(NULL, ";");
+}
+for (i = 0; i < command_counter; i++)
+{
+execute_command(commands[i], built_on, envp);
+}
 }
 
 /**
@@ -59,7 +99,7 @@ exit(EXIT_SUCCESS);
 }
 }
 perror("execve");
-_exit(EXIT_FAILURE);
+_exit(-1);
 }
 
 
@@ -95,7 +135,12 @@ wtpid = waitpid(pid, &chilD_status, WUNTRACED);
 } while (!WIFEXITED(chilD_status) && !WIFSIGNALED(chilD_status));
 status = WEXITSTATUS(chilD_status);
 }
+for (a = 0; expanded_args[a] != NULL; a++)
+{
+free(expanded_args[a]);
 }
+}
+
 
 /**
  * execute_command - Executes a single command
@@ -137,36 +182,5 @@ else
 {
 executing_command(args, envp);
 }
-}
-}
-
-/**
- * parse_execute - Parses the command to be executed
- * @input: Input string
- * @envp: Environment variables
- */
-void parse_execute(char *input, char **envp)
-{
-inside_s built_on[] = {
-{"env", envr},
-{"exit", exiting},
-{"setenv", set_env},
-{"unsetenv", unset_env},
-{"cd", cD},
-{NULL, NULL}
-};
-
-char *commands[100], *token;
-int command_counter = 0, i;
-
-token = _strtok(input, ";");
-while (token != NULL)
-{
-commands[command_counter++] = token;
-token = _strtok(NULL, ";");
-}
-for (i = 0; i < command_counter; i++)
-{
-execute_command(commands[i], built_on, envp);
 }
 }

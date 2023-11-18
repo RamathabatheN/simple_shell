@@ -11,11 +11,12 @@ int main(int argc, char *argv[])
 {
 if (argc > 1 && strcmp(argv[1], "-i") == 0)
 {
-shells();
-}
-else
-{
+is_interactive_mode = 1;
 interactive_shells();
+}
+else if (is_interactive_mode == 0)
+{
+shells();
 }
 return (EXIT_SUCCESS);
 }

@@ -5,14 +5,14 @@
  * @command: input string
  * Return: a
  */
-int envr(char __attribute__((unused)) **command)
+int envr(char **command)
 {
 unsigned int a;
-ssize_t __attribute__((unused)) e, __attribute__((unused)) f;
+ssize_t e, f;
 for (a = 0; environ[a] != NULL; a++)
 {
-e = write(1, environ[a], _strlen(environ[a]));
-f = write(1, "\n", 1);
+e = write(STDOUT_FILENO, environ[a], _strlen(environ[a]));
+f = write(STDOUT_FILENO, "\n", 1);
 }
 return (a);
 }
@@ -28,12 +28,12 @@ ssize_t __attribute__((unused)) q;
 if (command[1] == NULL || command[2] == NULL)
 {
 q = write(STDERR_FILENO, "Usage: setenv VARNAME VALUE\n", 28);
-return (EXIT_FAILURE);
+return (-1);
 }
 if (setenv(command[1], command[2], 1) != 0)
 {
 perror("setenv");
-return (EXIT_FAILURE);
+return (-1);
 }
 return (EXIT_SUCCESS);
 }
@@ -49,12 +49,12 @@ ssize_t __attribute__((unused)) q;
 if (command[1] == NULL)
 {
 q = write(STDERR_FILENO, "Usage: unsetenv VARNAME\n", 24);
-return (EXIT_FAILURE);
+return (-1);
 }
 if (unsetenv(command[1]) != 0)
 {
 perror("unsetenv");
-return (EXIT_FAILURE);
+return (-1);
 }
 return (EXIT_SUCCESS);
 }
@@ -73,7 +73,7 @@ char *output = malloc(_strlen(input) + 1);
 if (output == NULL)
 {
 perror("malloc");
-exit(EXIT_FAILURE);
+exit(-1);
 }
 src = input;
 dst = output;

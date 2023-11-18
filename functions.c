@@ -1,54 +1,6 @@
 #include "myshell.h"
 
 /**
- * _strcpy - copies the string pointed to by src
- * @dest: copy to
- * @src: copy from
- * @dest_size: size of dest
- * Return: copied string
- */
-void _strcpy(char *dest, const char *src, size_t dest_size)
-{
-ssize_t __attribute__((unused)) a;
-size_t i;
-if (dest == NULL || src == NULL || dest_size == 0)
-{
-a = write(STDERR_FILENO, "Invalid input in safe_strcpy\n", 29);
-return;
-}
-for (i = 0; i < dest_size - 1 && src[i] != '\0'; ++i)
-{
-dest[i] = src[i];
-}
-dest[i] = '\0';
-}
-
-/**
- * _strcat - concatenates two strings
- * @dest: input string
- * @src: input string
- * @dest_size: size of dest
- * Return:dest
- */
-void _strcat(char *dest, const char *src, size_t dest_size)
-{
-ssize_t __attribute__((unused)) a;
-size_t i, dest_len;
-if (dest == NULL || src == NULL || dest_size == 0)
-{
-a = write(STDERR_FILENO, "Invalid input in safe_strcat\n", 29);
-return;
-}
-dest_len = strlen(dest);
-for (i = 0; i < dest_size - 1 - dest_len && src[i] != '\0'; ++i)
-{
-dest[dest_len + i] = src[i];
-}
-dest[dest_len + i] = '\0';
-}
-
-
-/**
  * _strtok - removes tokens from string
  * @s: input string
  * @delim: delimiter
@@ -122,3 +74,49 @@ for (j = 0; s[j]; j++)
 return (j);
 }
 
+/**
+ * _strcpy - copies the string pointed to by src
+ * @dest: copy to
+ * @src: copy from
+ * @dest_size: size of dest
+ * Return: copied string
+ */
+void _strcpy(char *dest, const char *src, size_t dest_size)
+{
+ssize_t __attribute__((unused)) a;
+size_t i;
+if (dest == NULL || src == NULL || dest_size == 0)
+{
+a = write(STDERR_FILENO, "Invalid input in safe_strcpy\n", 29);
+return;
+}
+for (i = 0; i < dest_size - 1 && src[i] != '\0'; ++i)
+{
+dest[i] = src[i];
+}
+dest[i] = '\0';
+}
+
+/**
+ * _strcat - concatenates two strings
+ * @dest: input string
+ * @src: input string
+ * @dest_size: size of dest
+ * Return:dest
+ */
+void _strcat(char *dest, const char *src, size_t dest_size)
+{
+ssize_t __attribute__((unused)) a;
+size_t i, dest_len;
+if (dest == NULL || src == NULL || dest_size == 0)
+{
+a = write(STDERR_FILENO, "Invalid input in safe_strcat\n", 29);
+return;
+}
+dest_len = strlen(dest);
+for (i = 0; i < dest_size - 1 - dest_len && src[i] != '\0'; ++i)
+{
+dest[dest_len + i] = src[i];
+}
+dest[dest_len + i] = '\0';
+}

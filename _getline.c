@@ -9,7 +9,12 @@
 int _allocate_line(char **line, size_t n)
 {
 *line = (char *)malloc(n);
-return ((*line == NULL) ? -1 : 0);
+if (*line == NULL)
+{
+perror("malloc");
+return (-1);
+}
+return (0);
 }
 
 /**
@@ -37,7 +42,10 @@ if (a >= *n - 1)
 new_sz = *n * 2;
 new_ln = (char *)my_realloc(*line, new_sz);
 if (new_ln == NULL)
-return (EXIT_FAILURE);
+{
+free(*line);
+return (-1);
+}
 *line = new_ln;
 *n = new_sz;
 }
@@ -48,6 +56,6 @@ break;
 }
 (*line)[a] = '\0';
 if (a == 0)
-return (EXIT_FAILURE);
+return (-1);
 return (a);
 }
