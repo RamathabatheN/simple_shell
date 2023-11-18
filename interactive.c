@@ -1,28 +1,31 @@
 #include "myshell.h"
 
-/*int is_interactive_mode = 0;*/
 /**
  * interactive_shells - Entry point for interactive shell.
  * Return: Always 0
  */
 int interactive_shells(void)
 {
-int __attribute__((unused)) is_interactive_mode = 0;
-is_interactive_mode = 1;
-signal(SIGINT, signal_handler);
-while (1)
-{
+int is_interactive_mode = 1;
 char *input = NULL;
 size_t len = 0;
-ssize_t __attribute__((unused)) a;
+ssize_t r, __attribute__((unused)) a;
 
-a = write(STDOUT_FILENO, "$ ", 2);
-if (_getsline(&input, &len, stdin) == -1)
+signal(SIGINT, signal_handler);
+
+while (is_interactive_mode)
 {
-perror("getline");
-free(input);
-exit(-1);
+if (isatty(STDIN_FILENO))
+{
+a =  write(STDOUT_FILENO, "$ ", 2);
 }
+r = _getsline(&input, &len, stdin);
+if (r == -1)
+{
+return (0);
+}
+if (r > 1)
+{
 if (_strcmp(input, "exit") == 0)
 {
 free(input);
@@ -34,7 +37,8 @@ if (input != NULL)
 free(input);
 }
 }
-return (EXIT_SUCCESS);
+}
+return (0);
 }
 
 /**
@@ -100,8 +104,7 @@ else
 exit(EXIT_SUCCESS);
 }
 }
-perror("execve");
-_exit(-1);
+exit(0);
 }
 
 

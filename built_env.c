@@ -7,12 +7,20 @@
  */
 int envr(char __attribute__((unused)) **command)
 {
-unsigned int a;
+unsigned int a = 0;
 ssize_t __attribute__((unused)) e, __attribute__((unused)) f;
+ssize_t __attribute__((unused)) g;
+if (strcmp(command[0], "env") == 0)
+{
 for (a = 0; environ[a] != NULL; a++)
 {
-e = write(STDOUT_FILENO, environ[a], _strlen(environ[a]));
+e = write(STDOUT_FILENO, environ[a], strlen(environ[a]));
 f = write(STDOUT_FILENO, "\n", 1);
+}
+}
+else
+{
+g = write(STDOUT_FILENO, "Invalid command\n", 16);
 }
 return (a);
 }

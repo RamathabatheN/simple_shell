@@ -7,15 +7,27 @@
  * @argv: Array of command-line arguments
  * Return: Always 0
  */
-int main(int argc, char *argv[])
+int main(int argc, char *argv[], char **envp)
 {
-if (argc > 1 && strcmp(argv[1], "-i") == 0)
+if (argc > 1)
 {
-shells();
+if (strcmp(argv[1], "./hsh") == 0)
+{
+envr(envp);
+return (EXIT_SUCCESS);
 }
 else
 {
-interactive_shells();
+my_sprintf("Usage: %s \n", argv[0]);
+return (-1);
 }
+}
+signal(SIGINT, signal_handler);
+
+interactive_shells();
+
+/*fflush(stdin);
+fflush(stdout);*/
+
 return (EXIT_SUCCESS);
 }

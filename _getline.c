@@ -31,10 +31,10 @@ size_t a = 0, new_sz;
 char *new_ln;
 
 if (line == NULL || n == NULL || stream == NULL)
-return (EXIT_FAILURE);
+return (-1);
 
 if (*line == NULL && _allocate_line(line, 128) == -1)
-return (EXIT_FAILURE);
+return (-1);
 while ((c = _fgetc(stream)) != EOF)
 {
 if (a >= *n - 1)

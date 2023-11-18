@@ -9,14 +9,11 @@
  */
 void signal_handler(int signh)
 {
-int is_interactive_mode = 0;
-ssize_t __attribute__((unused)) a;
 if (signh == SIGINT)
 {
-if (is_interactive_mode)
+if ("EOF" == 0)
 {
-a = write(STDOUT_FILENO, "\n$ ", 3);
-fflush(stdout);
+exit (0);
 }
 }
 }
