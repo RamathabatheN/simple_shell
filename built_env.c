@@ -5,10 +5,10 @@
  * @command: input string
  * Return: a
  */
-int envr(char **command)
+int envr(char __attribute__((unused)) **command)
 {
 unsigned int a;
-ssize_t e, f;
+ssize_t __attribute__((unused)) e, __attribute__((unused)) f;
 for (a = 0; environ[a] != NULL; a++)
 {
 e = write(STDOUT_FILENO, environ[a], _strlen(environ[a]));

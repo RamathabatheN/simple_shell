@@ -1,11 +1,13 @@
 #include "myshell.h"
 
+/*int is_interactive_mode = 0;*/
 /**
  * interactive_shells - Entry point for interactive shell.
  * Return: Always 0
  */
 int interactive_shells(void)
 {
+int __attribute__((unused)) is_interactive_mode = 0;
 is_interactive_mode = 1;
 signal(SIGINT, signal_handler);
 while (1)

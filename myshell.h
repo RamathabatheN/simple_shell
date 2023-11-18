@@ -25,7 +25,7 @@ char *inside;
 int (*func)(char **command);
 } inside_s;
 
-int is_interactive_mode = 0;
+/*int is_interactive_mode = 0*/
 void signal_handler(int signh);
 extern char **environ;
 int shells(void);

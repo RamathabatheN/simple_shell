@@ -10,8 +10,8 @@
  */
 char *h_dollar_sign(char *src, char *dst, char **envp, int status)
 {
-char *og_src = src;
-char *og_dst = dst;
+char __attribute__((unused)) *og_src = src;
+char __attribute__((unused)) *og_dst = dst;
 
 if (src[0] == '?')
 {

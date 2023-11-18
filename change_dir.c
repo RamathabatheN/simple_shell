@@ -7,8 +7,8 @@
  */
 int cD(char **command)
 {
-int i;
-ssize_t q;
+int __attribute__((unused)) i;
+ssize_t __attribute__((unused)) q;
 char *old_dir = NULL, *new_dir = NULL, *prev_dir = NULL;
 
 if (command[1] == NULL)
